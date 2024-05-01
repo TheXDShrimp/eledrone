@@ -1,3 +1,7 @@
+#! SOURCE: https://github.com/damiafuentes/DJITelloPy/blob/master/examples/record-video.py
+
+
+
 import time, cv2
 from threading import Thread
 from djitellopy import Tello

@@ -97,13 +97,12 @@ print("Tello Init Complete")
 
 frame_read = tello.get_frame_read()
 frame_queue = list()
-print("Streaming variables created")
-
-
-
-
-
 curFrameIndex = 0
+
+
+
+
+
 def videoDisplay():
     # this thread will be started 3-5 (DELAY) seconds after capture to ensure frames are able to be processed in due time.
     # "oh but sonny this is so janky!"
