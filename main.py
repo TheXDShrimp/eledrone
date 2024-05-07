@@ -16,11 +16,14 @@ CLASS_LABELS = {0: "person", 2: "car", 39: "bottle", 67: "cell phone"}
 
 
 def getYoloSpeed(model, picture) -> float:
+    model(picture, verbose=False)
     start = time.process_time()
-    model(picture)
+    model(picture, verbose=False)
     return time.process_time() - start
 DELAY = math.floor(getYoloSpeed(model, cv2.imread("picture.png")) + DELAY)
+[print() for _ in range(10)]
 print("Delay of", DELAY, "seconds calculated")
+[print() for _ in range(10)]
 time.sleep(1) # allow runner to read the print statement
 
 
@@ -144,6 +147,8 @@ def videoCapture():
     return
 
 
+
+
 def videoProcess():
     global keepRecording, frame_queue, curFrameIndex
     
@@ -153,18 +158,18 @@ def videoProcess():
             time.sleep(1)
             continue
         
-        frameInd = len(frame_queue) - 1    
+        frameInd = len(frame_queue) - 1
         frame = frame_queue[frameInd]
         # process frame here
-        print("Processing frame", curFrameIndex)
+        print("Processing frame", frameInd)
         
         # change verbose to False to remove YOLO statements.
-        result = toBBList((modelresult := parseBoxesToList(model(frame, verbose=True))))
-        print(result)
+        result = toBBList((modelresult := parseBoxesToList(model(frame, verbose=False))))
+        # print(result)
         
         # draw boxes on the frame and label them
         for box in result:
-            if box.get_confidence() < 0.2:
+            if box.get_confidence() < 0.5:
                 continue
             
             # do it for every frame between the 2 processes.
