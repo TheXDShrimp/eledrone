@@ -9,7 +9,7 @@ print("YOLO Model Loaded")
 # Initialize Global Variables
 FPS = 30
 DELAY = 3 # 3 second initial delay
-CLASS_LABELS = {0: "person", 2: "car", 39: "bottle", 67: "cell phone"}
+CLASS_LABELS = model.names
 
 
 
@@ -53,7 +53,7 @@ class BoundBox:
         return self.confidence
 
     def get_coordinates(self):
-        return (self.xmin, self.ymin, self.xmin + self.width, self.ymin + self.height)
+        return (self.xmin, self.ymin, self.width, self.height)
 
     def __repr__(self):
         return "({:.2f}, {:.2f}, {:.2f}, {:.2f}: {})".format(self.xmin, self.ymin, self.xmin + self.width, self.ymin + self.height, self.class_label)
@@ -165,7 +165,7 @@ def videoProcess():
         
         # change verbose to False to remove YOLO statements.
         result = toBBList((modelresult := parseBoxesToList(model(frame, verbose=False))))
-        # print(result)
+        print(result)
         
         # draw boxes on the frame and label them
         for box in result:
@@ -198,7 +198,11 @@ start(("Processing", processing))
 # NOTE: there are no time.sleep() statements here. Those statements block the thread from 
 #       accepting "ok" messages from the drone (i think), since it crashes every time I add a time.sleep() statement.
 
-tello.takeoff()
+try:
+    tello.takeoff()
+except Exception as e:
+    print(e)
+    exit()
 # tello.move_back(100)
 tello.rotate_clockwise(360)
 tello.land()
